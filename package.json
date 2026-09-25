@@ -1,0 +1,22 @@
+{
+  "name": "shiftboard-api",
+  "version": "1.4.0",
+  "description": "Shift scheduling API for small teams",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/server.js",
+    "migrate": "node --disable-warning=ExperimentalWarning scripts/migrate.js",
+    "test": "node --disable-warning=ExperimentalWarning --test",
+    "smoke": "node --disable-warning=ExperimentalWarning scripts/smoke.js",
+    "build:image": "sh scripts/build-image.sh",
+    "record:previous-tag": "node scripts/record-previous-tag.js"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
