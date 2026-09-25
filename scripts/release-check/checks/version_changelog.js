@@ -30,7 +30,7 @@ module.exports = async function run(params, env) {
     }
 
     // Match a line that is exactly "## {version}" (with optional trailing whitespace)
-    const headingRegex = new RegExp(`^##\\s+${version.replace('.', '\\.').replace('.', '\\.')}\\s*$`, 'm');
+    const headingRegex = new RegExp(`^##\\s+${version.replace('.', '\\.').replace('.', '\\.')}\\r?$`, 'm');
     if (!headingRegex.test(changelog)) {
       return {
         status: 'FAIL',

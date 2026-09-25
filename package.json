@@ -9,7 +9,8 @@
     "test": "node --disable-warning=ExperimentalWarning --test",
     "smoke": "node --disable-warning=ExperimentalWarning scripts/smoke.js",
     "build:image": "sh scripts/build-image.sh",
-    "record:previous-tag": "node scripts/record-previous-tag.js"
+    "record:previous-tag": "node scripts/record-previous-tag.js",
+    "release-check": "node --disable-warning=ExperimentalWarning scripts/release-check/index.js"
   },
   "engines": {
     "node": ">=22.13"

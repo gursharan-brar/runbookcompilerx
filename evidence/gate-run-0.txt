@@ -1,0 +1,26 @@
+
+> shiftboard-api@1.4.0 release-check
+> node --disable-warning=ExperimentalWarning scripts/release-check/index.js
+
+
+Release Gate Check ΓÇö 9 auto, 1 manual
+
+  [PASS] Γ£ô Step 1 ΓÇö ci_green
+  [FAIL] Γ£ù Step 2 ΓÇö version_changelog
+         CHANGELOG.md does not contain a "## 1.4.0" heading. Add a changelog entry for version 1.4.0.
+  [FAIL] Γ£ù Step 3 ΓÇö config_vars
+         Missing required environment variables: DATABASE_URL, JWT_SECRET, LOG_LEVEL
+  [PASS] Γ£ô Step 4 ΓÇö migrations_staging
+  [FAIL] Γ£ù Step 5 ΓÇö health_check_staging
+         GET /health returned 200 but response does not confirm DB is reachable. Got: {"status":"ok"}. The /health route must include a database reachability check (see gap-report.md Step 5).
+  [FAIL] Γ£ù Step 6 ΓÇö smoke_tests
+         Smoke suite failures: "create shift" did not run (not present in smoke suite output)
+  [PASS] Γ£ô Step 7 ΓÇö docker_image_tagged
+  [PASS] Γ£ô Step 8 ΓÇö non_root_container
+  [PASS] Γ£ô Step 9 ΓÇö rollback_file
+
+Manual gates (operator action required):
+  [POST-DEPLOY] Step 10 ΓÇö watch_after_deploy
+         Keep the production dashboard open for 15 minutes. If the 5xx rate exceeds 2%, roll back to the tag in releases/PREVIOUS_TAG and post in #releases. Confirm you have watched for 15 minutes and the error rate is below 2%.
+
+RESULT: FAIL ΓÇö one or more gates failed. Fix issues before releasing.
