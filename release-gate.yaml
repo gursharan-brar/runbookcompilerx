@@ -1,0 +1,62 @@
+version: "1"
+gates:
+  - id: ci_green
+    step: 1
+    status: auto
+    requirement: "CI is green on main. Check the latest pipeline run on main. Never release from a red or cancelled build, even if the failure looks unrelated."
+    check: ci_green
+
+  - id: version_changelog
+    step: 2
+    status: auto
+    requirement: "Version and changelog. Bump the version in package.json using semver. Add an entry to CHANGELOG.md under the new version number. The version in package.json is what we tag the image with, so they must match."
+    check: version_changelog
+
+  - id: config_vars
+    step: 3
+    status: auto
+    requirement: "Production config is present. Confirm DATABASE_URL, JWT_SECRET and LOG_LEVEL are set for the target environment. Heads up: the service boots fine without JWT_SECRET, but every login will fail with a 401. We have been burned by this twice."
+    check: config_vars
+
+  - id: migrations_staging
+    step: 4
+    status: auto
+    requirement: "Migrations on staging. Run pending database migrations against staging and make sure they finish cleanly: npm run migrate"
+    check: migrations_staging
+
+  - id: health_check_staging
+    step: 5
+    status: auto
+    requirement: "Health check. Call GET /health on staging. It must return 200 and report that the database is reachable. A plain 200 is not enough, because the process can be up while the DB connection is dead."
+    check: health_check_staging
+
+  - id: smoke_tests
+    step: 6
+    status: auto
+    requirement: "Smoke tests. Run the smoke suite against staging. It has to cover the three flows customers use most: logging in, creating a shift, and listing shifts. All three must pass. npm run smoke"
+    check: smoke_tests
+
+  - id: docker_image_tagged
+    step: 7
+    status: auto
+    requirement: "Build the image. Build the Docker image and tag it with the version from package.json. Never ship an image tagged latest."
+    check: docker_image_tagged
+
+  - id: non_root_container
+    step: 8
+    status: auto
+    requirement: "Non-root container. The container must not run as root. Security review will block the release if it does."
+    check: non_root_container
+
+  - id: rollback_file
+    step: 9
+    status: auto
+    requirement: "Record the rollback point. Before deploying, write the currently deployed image tag to releases/PREVIOUS_TAG and commit it. On-call uses this file to roll back at 2 AM, so do not skip it."
+    check: rollback_file
+
+  - id: watch_after_deploy
+    step: 10
+    status: manual
+    requirement: "Watch after deploy. Keep the production dashboard open for 15 minutes after the deploy. If the 5xx rate goes above 2 percent, roll back using the tag from step 9 and post in #releases."
+    prompt: "Keep the production dashboard open for 15 minutes. If the 5xx rate exceeds 2%, roll back to the tag in releases/PREVIOUS_TAG and post in #releases. Confirm you have watched for 15 minutes and the error rate is below 2%."
+    post_deploy: true
