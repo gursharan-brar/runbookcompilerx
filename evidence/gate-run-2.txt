@@ -1,0 +1,22 @@
+
+> shiftboard-api@1.4.0 release-check
+> node --disable-warning=ExperimentalWarning scripts/release-check/index.js
+
+
+Release Gate Check — 9 auto, 1 manual
+
+  [PASS] ✓ Step 1 — ci_green
+  [PASS] ✓ Step 2 — version_changelog
+  [PASS] ✓ Step 3 — config_vars
+  [PASS] ✓ Step 4 — migrations_staging
+  [PASS] ✓ Step 5 — health_check_staging
+  [PASS] ✓ Step 6 — smoke_tests
+  [PASS] ✓ Step 7 — docker_image_tagged
+  [PASS] ✓ Step 8 — non_root_container
+  [PASS] ✓ Step 9 — rollback_file
+
+Manual gates (operator action required):
+  [POST-DEPLOY] Step 10 — watch_after_deploy
+         Keep the production dashboard open for 15 minutes. If the 5xx rate exceeds 2%, roll back to the tag in releases/PREVIOUS_TAG and post in #releases. Confirm you have watched for 15 minutes and the error rate is below 2%.
+
+RESULT: PASS — all auto gates passed. Complete manual gates before/after deploy as marked.
