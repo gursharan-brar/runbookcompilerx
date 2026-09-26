@@ -28,6 +28,20 @@ async function main() {
     token = (await r.json()).token;
   });
 
+  await check('create shift', async () => {
+    const now = new Date();
+    const r = await fetch(`${base}/shifts`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
+      body: JSON.stringify({
+        worker: 'smoke-worker',
+        starts_at: new Date(now.getTime() + 60_000).toISOString(),
+        ends_at: new Date(now.getTime() + 3_660_000).toISOString()
+      })
+    });
+    if (r.status !== 201) throw new Error(`expected 201, got ${r.status}`);
+  });
+
   await check('list shifts', async () => {
     const r = await fetch(`${base}/shifts`, { headers: { authorization: `Bearer ${token}` } });
     if (r.status !== 200) throw new Error(`expected 200, got ${r.status}`);
