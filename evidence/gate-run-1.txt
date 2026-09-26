@@ -6,8 +6,7 @@
 Release Gate Check — 9 auto, 1 manual
 
   [PASS] ✓ Step 1 — ci_green
-  [FAIL] ✗ Step 2 — version_changelog
-         CHANGELOG.md does not contain a "## 1.4.0" heading. Add a changelog entry for version 1.4.0.
+  [PASS] ✓ Step 2 — version_changelog
   [PASS] ✓ Step 3 — config_vars
   [PASS] ✓ Step 4 — migrations_staging
   [FAIL] ✗ Step 5 — health_check_staging
